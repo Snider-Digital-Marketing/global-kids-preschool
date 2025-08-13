@@ -40,6 +40,151 @@
         .page { display: none; }
         .page.active { display: block; }
         
+        /* Tina CMS Admin Panel Styles */
+        .tina-admin-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .tina-admin-toggle:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        .tina-admin-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .tina-admin-panel.active {
+            right: 0;
+        }
+        .tina-admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--background-light);
+        }
+        .tina-admin-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .tina-close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 5px;
+        }
+        .tina-form-group {
+            margin-bottom: 20px;
+        }
+        .tina-form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .tina-form-group input,
+        .tina-form-group textarea,
+        .tina-form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E1E8ED;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .tina-form-group input:focus,
+        .tina-form-group textarea:focus,
+        .tina-form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .tina-form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .tina-save-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+        .tina-save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        .tina-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--background-light);
+            border-radius: 12px;
+        }
+        .tina-section h3 {
+            color: var(--primary-color);
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .tina-feature-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #E1E8ED;
+        }
+        .tina-feature-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .tina-admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+            display: none;
+        }
+        .tina-admin-overlay.active {
+            display: block;
+        }
+        
         /* Header */
         header {
             background: var(--white);
@@ -518,6 +663,8 @@
             .two-column { grid-template-columns: 1fr; text-align: center; }
             .form-row { grid-template-columns: 1fr; }
             .section-title { font-size: 2rem; }
+            .tina-admin-panel { width: 100%; right: -100%; }
+            .tina-admin-toggle { top: 10px; right: 10px; padding: 8px 12px; font-size: 12px; }
         }
         @media (max-width: 480px) {
             .container { padding: 0 15px; }
@@ -529,6 +676,116 @@
     </style>
 </head>
 <body>
+    <!-- Tina CMS Admin Toggle -->
+    <button class="tina-admin-toggle" id="tina-toggle">✏️ Edit Content</button>
+    
+    <!-- Tina CMS Admin Overlay -->
+    <div class="tina-admin-overlay" id="tina-overlay"></div>
+    
+    <!-- Tina CMS Admin Panel -->
+    <div class="tina-admin-panel" id="tina-panel">
+        <div class="tina-admin-header">
+            <h2 class="tina-admin-title">Content Editor</h2>
+            <button class="tina-close-btn" id="tina-close">×</button>
+        </div>
+        
+        <div class="tina-section">
+            <h3>Hero Section</h3>
+            <div class="tina-form-group">
+                <label for="hero-title">Main Title</label>
+                <input type="text" id="hero-title" value="Come See What Makes Us So Special">
+            </div>
+            <div class="tina-form-group">
+                <label for="hero-subtitle">Subtitle</label>
+                <textarea id="hero-subtitle">A hidden gem of a preschool that's just around the corner from you. With small class sizes, loving teachers, and flexible options, your child will get the individual attention & care that's so important in these early years.</textarea>
+            </div>
+            <div class="tina-form-group">
+                <label for="hero-btn1">Primary Button Text</label>
+                <input type="text" id="hero-btn1" value="Schedule Your Tour">
+            </div>
+            <div class="tina-form-group">
+                <label for="hero-btn2">Secondary Button Text</label>
+                <input type="text" id="hero-btn2" value="Learn About Our Approach">
+            </div>
+            <button class="tina-save-btn" onclick="saveHeroContent()">Save Hero Section</button>
+        </div>
+
+        <div class="tina-section">
+            <h3>Features Section</h3>
+            <div id="features-editor">
+                <div class="tina-feature-item">
+                    <h4>Feature 1</h4>
+                    <div class="tina-form-group">
+                        <label>Icon (emoji)</label>
+                        <input type="text" data-feature="0" data-field="icon" value="👥">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Title</label>
+                        <input type="text" data-feature="0" data-field="title" value="Small Class Sizes">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Description</label>
+                        <textarea data-feature="0" data-field="description">With low student-to-teacher ratios well below state requirements, every child receives individual attention and personalized care.</textarea>
+                    </div>
+                </div>
+                <div class="tina-feature-item">
+                    <h4>Feature 2</h4>
+                    <div class="tina-form-group">
+                        <label>Icon (emoji)</label>
+                        <input type="text" data-feature="1" data-field="icon" value="🎨">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Title</label>
+                        <input type="text" data-feature="1" data-field="title" value="Reggio Emilia Approach">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Description</label>
+                        <textarea data-feature="1" data-field="description">Children learn best when following their interests. Our play-based, project-based curriculum encourages exploration and joyful learning.</textarea>
+                    </div>
+                </div>
+                <div class="tina-feature-item">
+                    <h4>Feature 3</h4>
+                    <div class="tina-form-group">
+                        <label>Icon (emoji)</label>
+                        <input type="text" data-feature="2" data-field="icon" value="❤️">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Title</label>
+                        <input type="text" data-feature="2" data-field="title" value="Loving Teachers">
+                    </div>
+                    <div class="tina-form-group">
+                        <label>Description</label>
+                        <textarea data-feature="2" data-field="description">Every teacher and the director is friendly, loving, and truly invested in the children's education. Every teacher knows every child and their family.</textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="tina-save-btn" onclick="saveFeaturesContent()">Save Features Section</button>
+        </div>
+
+        <div class="tina-section">
+            <h3>Contact Information</h3>
+            <div class="tina-form-group">
+                <label for="contact-phone">Phone Number</label>
+                <input type="text" id="contact-phone" value="(512) 579-0245">
+            </div>
+            <div class="tina-form-group">
+                <label for="contact-email">Email Address</label>
+                <input type="email" id="contact-email" value="tessa.fujimoto@gkpreschool.com">
+            </div>
+            <div class="tina-form-group">
+                <label for="contact-address">Street Address</label>
+                <textarea id="contact-address">4 Chisholm Trail
+Round Rock, TX 78681</textarea>
+            </div>
+            <div class="tina-form-group">
+                <label for="contact-hours">Hours</label>
+                <textarea id="contact-hours">Monday - Friday: 7:00 AM - 6:00 PM
+Saturday - Sunday: Closed</textarea>
+            </div>
+            <button class="tina-save-btn" onclick="saveContactContent()">Save Contact Info</button>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -555,11 +812,11 @@
             <section class="hero">
                 <div class="container">
                     <div class="hero-content">
-                        <h1>Come See What Makes Us So Special</h1>
-                        <p class="hero-subtitle">A hidden gem of a preschool that's just around the corner from you. With small class sizes, loving teachers, and flexible options, your child will get the individual attention & care that's so important in these early years.</p>
+                        <h1 id="hero-main-title">Come See What Makes Us So Special</h1>
+                        <p class="hero-subtitle" id="hero-main-subtitle">A hidden gem of a preschool that's just around the corner from you. With small class sizes, loving teachers, and flexible options, your child will get the individual attention & care that's so important in these early years.</p>
                         <div class="hero-buttons">
-                            <button class="btn-primary" data-page="contact">Schedule Your Tour</button>
-                            <button class="btn-secondary" data-page="reggio">Learn About Our Approach</button>
+                            <button class="btn-primary" data-page="contact" id="hero-primary-btn">Schedule Your Tour</button>
+                            <button class="btn-secondary" data-page="reggio" id="hero-secondary-btn">Learn About Our Approach</button>
                         </div>
                     </div>
                 </div>
@@ -568,7 +825,7 @@
             <section class="content-section">
                 <div class="container">
                     <h2 class="section-title">What Makes Us Special</h2>
-                    <div class="features-grid">
+                    <div class="features-grid" id="features-grid">
                         <div class="feature-card">
                             <span class="feature-icon">👥</span>
                             <h3>Small Class Sizes</h3>
@@ -936,7 +1193,7 @@
                         <div class="text-content">
                             <h2>We are always looking for talented people to join our team of teachers</h2>
                             <p>Send our director your resume to start the application process:</p>
-                            <p><strong><a href="mailto:tessa.fujimoto@gkpreschool.com" style="color: var(--primary-color);">tessa.fujimoto@gkpreschool.com</a></strong></p>
+                            <p><strong><a href="mailto:tessa.fujimoto@gkpreschool.com" style="color: var(--primary-color);" id="teaching-email">tessa.fujimoto@gkpreschool.com</a></strong></p>
                             <p style="margin-top: 2rem;"><em>Nice to meet you!</em></p>
                             <a href="mailto:tessa.fujimoto@gkpreschool.com?subject=Teaching Position Interest" class="btn-primary">Send Your Resume</a>
                         </div>
@@ -1059,180 +1316,451 @@
                         <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">Visit Us</h2>
                         <div class="two-column">
                             <div class="text-content">
-                                <h3>Global Kids Preschool</h3>
-                                <p><strong>📍 Address:</strong><br>4 Chisholm Trail<br>Round Rock, TX 78681</p>
-                                <p><strong>📞 Phone:</strong><br><a href="tel:5125790245" style="color: var(--primary-color);">(512) 579-0245</a></p>
-                                <p><strong>✉️ Email:</strong><br><a href="mailto:tessa.fujimoto@gkpreschool.com" style="color: var(--primary-color);">tessa.fujimoto@gkpreschool.com</a></p>
-                                <p><strong>🕐 Hours:</strong><br>Monday - Friday: 7:00 AM - 6:00 PM<br>Saturday - Sunday: Closed</p>
-                            </div>
-                            <div style="background: var(--background-light); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-                                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">How to Enroll</h3>
-                                <p>It's easy and free to join the waitlist! When spots open up in a classroom we contact all waitlist families for that age group and then it's first-come first-served.</p>
-                                <p style="margin-top: 1rem;">If we have space available and you have confirmed a start date and schedule with the director…it's time to send in your forms!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
+                               <h3>Global Kids Preschool</h3>
+                               <p><strong>📍 Address:</strong><br><span id="contact-address-display">4 Chisholm Trail<br>Round Rock, TX 78681</span></p>
+                               <p><strong>📞 Phone:</strong><br><a href="tel:5125790245" style="color: var(--primary-color);" id="contact-phone-display">(512) 579-0245</a></p>
+                               <p><strong>✉️ Email:</strong><br><a href="mailto:tessa.fujimoto@gkpreschool.com" style="color: var(--primary-color);" id="contact-email-display">tessa.fujimoto@gkpreschool.com</a></p>
+                               <p><strong>🕐 Hours:</strong><br><span id="contact-hours-display">Monday - Friday: 7:00 AM - 6:00 PM<br>Saturday - Sunday: Closed</span></p>
+                           </div>
+                           <div style="background: var(--background-light); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow);">
+                               <h3 style="color: var(--primary-color); margin-bottom: 1rem;">How to Enroll</h3>
+                               <p>It's easy and free to join the waitlist! When spots open up in a classroom we contact all waitlist families for that age group and then it's first-come first-served.</p>
+                               <p style="margin-top: 1rem;">If we have space available and you have confirmed a start date and schedule with the director…it's time to send in your forms!</p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </section>
+       </div>
+   </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Contact Information</h3>
-                    <div class="contact-info">
-                        <span>📍</span>
-                        <p>4 Chisholm Trail<br>Round Rock, TX 78681</p>
-                    </div>
-                    <div class="contact-info">
-                        <span>📞</span>
-                        <p><a href="tel:5125790245">(512) 579-0245</a></p>
-                    </div>
-                    <div class="contact-info">
-                        <span>✉️</span>
-                        <p><a href="mailto:tessa.fujimoto@gkpreschool.com">tessa.fujimoto@gkpreschool.com</a></p>
-                    </div>
-                </div>
+   <!-- Footer -->
+   <footer>
+       <div class="container">
+           <div class="footer-content">
+               <div class="footer-section">
+                   <h3>Contact Information</h3>
+                   <div class="contact-info">
+                       <span>📍</span>
+                       <p id="footer-address">4 Chisholm Trail<br>Round Rock, TX 78681</p>
+                   </div>
+                   <div class="contact-info">
+                       <span>📞</span>
+                       <p><a href="tel:5125790245" id="footer-phone">(512) 579-0245</a></p>
+                   </div>
+                   <div class="contact-info">
+                       <span>✉️</span>
+                       <p><a href="mailto:tessa.fujimoto@gkpreschool.com" id="footer-email">tessa.fujimoto@gkpreschool.com</a></p>
+                   </div>
+               </div>
 
-                <div class="footer-section">
-                    <h3>School Hours</h3>
-                    <p><strong>Monday - Friday:</strong><br>7:00 AM - 6:00 PM</p>
-                    <p><strong>Saturday - Sunday:</strong><br>Closed</p>
-                    <p style="margin-top: 1rem;"><strong>Licensed by the State of Texas</strong><br>Annual inspections & compliance</p>
-                </div>
+               <div class="footer-section">
+                   <h3>School Hours</h3>
+                   <p id="footer-hours"><strong>Monday - Friday:</strong><br>7:00 AM - 6:00 PM</p>
+                   <p><strong>Saturday - Sunday:</strong><br>Closed</p>
+                   <p style="margin-top: 1rem;"><strong>Licensed by the State of Texas</strong><br>Annual inspections & compliance</p>
+               </div>
 
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <p><a data-page="home">Home</a></p>
-                    <p><a data-page="reggio">Reggio Emilia Approach</a></p>
-                    <p><a data-page="families">For Families</a></p>
-                    <p><a data-page="teaching">Teaching Opportunities</a></p>
-                    <p><a data-page="contact">Schedule Tour</a></p>
-                </div>
+               <div class="footer-section">
+                   <h3>Quick Links</h3>
+                   <p><a data-page="home">Home</a></p>
+                   <p><a data-page="reggio">Reggio Emilia Approach</a></p>
+                   <p><a data-page="families">For Families</a></p>
+                   <p><a data-page="teaching">Teaching Opportunities</a></p>
+                   <p><a data-page="contact">Schedule Tour</a></p>
+               </div>
 
-                <div class="footer-section">
-                    <h3>Connect With Us</h3>
-                    <p>Stay connected for updates, photos, and events</p>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/share/g/4Y2Y6bhpJXrF3Hw9/?mibextid=K35XfP" target="_blank">📘</a>
-                        <a href="#">📷</a>
-                        <a href="#">⭐</a>
-                    </div>
-                </div>
-            </div>
+               <div class="footer-section">
+                   <h3>Connect With Us</h3>
+                   <p>Stay connected for updates, photos, and events</p>
+                   <div class="social-links">
+                       <a href="https://www.facebook.com/share/g/4Y2Y6bhpJXrF3Hw9/?mibextid=K35XfP" target="_blank">📘</a>
+                       <a href="#">📷</a>
+                       <a href="#">⭐</a>
+                   </div>
+               </div>
+           </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2025 Global Kids Preschool. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+           <div class="footer-bottom">
+               <p>&copy; 2025 Global Kids Preschool. All rights reserved.</p>
+           </div>
+       </div>
+   </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('[data-page]');
-            const pages = document.querySelectorAll('.page');
-            
-            function showPage(pageId) {
-                pages.forEach(page => page.classList.remove('active'));
-                const targetPage = document.getElementById(pageId + '-page');
-                if (targetPage) targetPage.classList.add('active');
-                
-                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-                const activeNavLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
-                if (activeNavLink) activeNavLink.classList.add('active');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                const navMenu = document.getElementById('nav-menu');
-                if (navMenu) navMenu.classList.remove('active');
-            }
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const pageId = this.getAttribute('data-page');
-                    if (pageId) showPage(pageId);
-                });
-            });
+   <script>
+       // Initialize content data structure
+       let contentData = {
+           hero: {
+               title: "Come See What Makes Us So Special",
+               subtitle: "A hidden gem of a preschool that's just around the corner from you. With small class sizes, loving teachers, and flexible options, your child will get the individual attention & care that's so important in these early years.",
+               primaryBtn: "Schedule Your Tour",
+               secondaryBtn: "Learn About Our Approach"
+           },
+           features: [
+               {
+                   icon: "👥",
+                   title: "Small Class Sizes",
+                   description: "With low student-to-teacher ratios well below state requirements, every child receives individual attention and personalized care."
+               },
+               {
+                   icon: "🎨",
+                   title: "Reggio Emilia Approach",
+                   description: "Children learn best when following their interests. Our play-based, project-based curriculum encourages exploration and joyful learning."
+               },
+               {
+                   icon: "❤️",
+                   title: "Loving Teachers",
+                   description: "Every teacher and the director is friendly, loving, and truly invested in the children's education. Every teacher knows every child and their family."
+               }
+           ],
+           contact: {
+               phone: "(512) 579-0245",
+               email: "tessa.fujimoto@gkpreschool.com",
+               address: "4 Chisholm Trail\nRound Rock, TX 78681",
+               hours: "Monday - Friday: 7:00 AM - 6:00 PM\nSaturday - Sunday: Closed"
+           }
+       };
 
-            const mobileToggle = document.getElementById('mobile-toggle');
-            const navMenu = document.getElementById('nav-menu');
-            if (mobileToggle && navMenu) {
-                mobileToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
-            }
+       document.addEventListener('DOMContentLoaded', function() {
+           // Load content from localStorage on page load
+           loadContentFromStorage();
+           
+           // Navigation functionality
+           const navLinks = document.querySelectorAll('[data-page]');
+           const pages = document.querySelectorAll('.page');
+           
+           function showPage(pageId) {
+               pages.forEach(page => page.classList.remove('active'));
+               const targetPage = document.getElementById(pageId + '-page');
+               if (targetPage) targetPage.classList.add('active');
+               
+               document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+               const activeNavLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+               if (activeNavLink) activeNavLink.classList.add('active');
+               
+               window.scrollTo({ top: 0, behavior: 'smooth' });
+               const navMenu = document.getElementById('nav-menu');
+               if (navMenu) navMenu.classList.remove('active');
+           }
+           
+           navLinks.forEach(link => {
+               link.addEventListener('click', function(e) {
+                   e.preventDefault();
+                   const pageId = this.getAttribute('data-page');
+                   if (pageId) showPage(pageId);
+               });
+           });
 
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    const isActive = answer.classList.contains('active');
-                    
-                    document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('active'));
-                    document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
-                    
-                    if (!isActive) {
-                        answer.classList.add('active');
-                        this.classList.add('active');
-                    }
-                });
-            });
+           // Mobile menu functionality
+           const mobileToggle = document.getElementById('mobile-toggle');
+           const navMenu = document.getElementById('nav-menu');
+           if (mobileToggle && navMenu) {
+               mobileToggle.addEventListener('click', function() {
+                   navMenu.classList.toggle('active');
+               });
+           }
 
-            function handleFormSubmission(formId, btnId, btnTextId, btnLoadingId) {
-                const form = document.getElementById(formId);
-                const btn = document.getElementById(btnId);
-                const btnText = document.getElementById(btnTextId);
-                const btnLoading = document.getElementById(btnLoadingId);
+           // FAQ functionality
+           const faqQuestions = document.querySelectorAll('.faq-question');
+           faqQuestions.forEach(question => {
+               question.addEventListener('click', function() {
+                   const answer = this.nextElementSibling;
+                   const isActive = answer.classList.contains('active');
+                   
+                   document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('active'));
+                   document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+                   
+                   if (!isActive) {
+                       answer.classList.add('active');
+                       this.classList.add('active');
+                   }
+               });
+           });
 
-                if (form && btn && btnText && btnLoading) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        
-                        btnText.style.display = 'none';
-                        btnLoading.style.display = 'inline-block';
-                        btn.disabled = true;
+           // Form submission functionality
+           function handleFormSubmission(formId, btnId, btnTextId, btnLoadingId) {
+               const form = document.getElementById(formId);
+               const btn = document.getElementById(btnId);
+               const btnText = document.getElementById(btnTextId);
+               const btnLoading = document.getElementById(btnLoadingId);
 
-                        const formData = new FormData(form);
-                        const data = {};
-                        formData.forEach((value, key) => { data[key] = value; });
+               if (form && btn && btnText && btnLoading) {
+                   form.addEventListener('submit', function(e) {
+                       e.preventDefault();
+                       
+                       btnText.style.display = 'none';
+                       btnLoading.style.display = 'inline-block';
+                       btn.disabled = true;
 
-                        setTimeout(function() {
-                            const subject = encodeURIComponent('Tour Request - Global Kids Preschool');
-                            const body = encodeURIComponent(
-                                `Tour Request Details:\n\n` +
-                                `Parent Name: ${data['parent-name'] || ''}\n` +
-                                `Phone: ${data['phone'] || ''}\n` +
-                                `Email: ${data['email'] || ''}\n` +
-                                `Child's Age: ${data['child-age'] || ''}\n` +
-                                `Preferred Start Date: ${data['start-date'] || ''}\n` +
-                                `Request Type: ${data['tour-preference'] || ''}\n\n` +
-                                `Questions/Comments:\n${data['message'] || ''}\n\n` +
-                                `Please contact me to discuss next steps.\n\n` +
-                                `Best regards,\n${data['parent-name'] || ''}`
-                            );
+                       const formData = new FormData(form);
+                       const data = {};
+                       formData.forEach((value, key) => { data[key] = value; });
 
-                            window.location.href = `mailto:tessa.fujimoto@gkpreschool.com?subject=${subject}&body=${body}`;
+                       setTimeout(function() {
+                           const subject = encodeURIComponent('Tour Request - Global Kids Preschool');
+                           const body = encodeURIComponent(
+                               `Tour Request Details:\n\n` +
+                               `Parent Name: ${data['parent-name'] || ''}\n` +
+                               `Phone: ${data['phone'] || ''}\n` +
+                               `Email: ${data['email'] || ''}\n` +
+                               `Child's Age: ${data['child-age'] || ''}\n` +
+                               `Preferred Start Date: ${data['start-date'] || ''}\n` +
+                               `Request Type: ${data['tour-preference'] || ''}\n\n` +
+                               `Questions/Comments:\n${data['message'] || ''}\n\n` +
+                               `Please contact me to discuss next steps.\n\n` +
+                               `Best regards,\n${data['parent-name'] || ''}`
+                           );
 
-                            form.reset();
-                            btnText.style.display = 'inline-block';
-                            btnLoading.style.display = 'none';
-                            btn.disabled = false;
-                            btnText.textContent = 'Thank you! Email opened.';
-                            
-                            setTimeout(function() {
-                                btnText.textContent = formId.includes('page') ? 'Send My Message' : 'Schedule My Tour';
-                            }, 3000);
-                        }, 1500);
-                    });
-                }
-            }
+                           window.location.href = `mailto:${contentData.contact.email}?subject=${subject}&body=${body}`;
 
-            handleFormSubmission('contact-form', 'submit-btn', 'btn-text', 'btn-loading');
-            handleFormSubmission('contact-form-page', 'submit-btn-page', 'btn-text-page', 'btn-loading-page');
-        });
-    </script>
+                           form.reset();
+                           btnText.style.display = 'inline-block';
+                           btnLoading.style.display = 'none';
+                           btn.disabled = false;
+                           btnText.textContent = 'Thank you! Email opened.';
+                           
+                           setTimeout(function() {
+                               btnText.textContent = formId.includes('page') ? 'Send My Message' : 'Schedule My Tour';
+                           }, 3000);
+                       }, 1500);
+                   });
+               }
+           }
+
+           handleFormSubmission('contact-form', 'submit-btn', 'btn-text', 'btn-loading');
+           handleFormSubmission('contact-form-page', 'submit-btn-page', 'btn-text-page', 'btn-loading-page');
+
+           // Tina CMS functionality
+           const tinaToggle = document.getElementById('tina-toggle');
+           const tinaPanel = document.getElementById('tina-panel');
+           const tinaOverlay = document.getElementById('tina-overlay');
+           const tinaClose = document.getElementById('tina-close');
+
+           function openTinaPanel() {
+               tinaPanel.classList.add('active');
+               tinaOverlay.classList.add('active');
+               document.body.style.overflow = 'hidden';
+               populateTinaForm();
+           }
+
+           function closeTinaPanel() {
+               tinaPanel.classList.remove('active');
+               tinaOverlay.classList.remove('active');
+               document.body.style.overflow = '';
+           }
+
+           function populateTinaForm() {
+               // Populate hero section
+               document.getElementById('hero-title').value = contentData.hero.title;
+               document.getElementById('hero-subtitle').value = contentData.hero.subtitle;
+               document.getElementById('hero-btn1').value = contentData.hero.primaryBtn;
+               document.getElementById('hero-btn2').value = contentData.hero.secondaryBtn;
+
+               // Populate features
+               contentData.features.forEach((feature, index) => {
+                   const iconInput = document.querySelector(`[data-feature="${index}"][data-field="icon"]`);
+                   const titleInput = document.querySelector(`[data-feature="${index}"][data-field="title"]`);
+                   const descInput = document.querySelector(`[data-feature="${index}"][data-field="description"]`);
+                   
+                   if (iconInput) iconInput.value = feature.icon;
+                   if (titleInput) titleInput.value = feature.title;
+                   if (descInput) descInput.value = feature.description;
+               });
+
+               // Populate contact info
+               document.getElementById('contact-phone').value = contentData.contact.phone;
+               document.getElementById('contact-email').value = contentData.contact.email;
+               document.getElementById('contact-address').value = contentData.contact.address;
+               document.getElementById('contact-hours').value = contentData.contact.hours;
+           }
+
+           tinaToggle.addEventListener('click', openTinaPanel);
+           tinaClose.addEventListener('click', closeTinaPanel);
+           tinaOverlay.addEventListener('click', closeTinaPanel);
+       });
+
+       // Tina CMS save functions
+       function saveHeroContent() {
+           contentData.hero.title = document.getElementById('hero-title').value;
+           contentData.hero.subtitle = document.getElementById('hero-subtitle').value;
+           contentData.hero.primaryBtn = document.getElementById('hero-btn1').value;
+           contentData.hero.secondaryBtn = document.getElementById('hero-btn2').value;
+
+           // Update the actual page content
+           document.getElementById('hero-main-title').textContent = contentData.hero.title;
+           document.getElementById('hero-main-subtitle').textContent = contentData.hero.subtitle;
+           document.getElementById('hero-primary-btn').textContent = contentData.hero.primaryBtn;
+           document.getElementById('hero-secondary-btn').textContent = contentData.hero.secondaryBtn;
+
+           saveContentToStorage();
+           showSaveMessage('Hero section updated successfully!');
+       }
+
+       function saveFeaturesContent() {
+           // Update the first 3 features from the form
+           for (let i = 0; i < 3; i++) {
+               const iconInput = document.querySelector(`[data-feature="${i}"][data-field="icon"]`);
+               const titleInput = document.querySelector(`[data-feature="${i}"][data-field="title"]`);
+               const descInput = document.querySelector(`[data-feature="${i}"][data-field="description"]`);
+               
+               if (iconInput && titleInput && descInput) {
+                   contentData.features[i] = {
+                       icon: iconInput.value,
+                       title: titleInput.value,
+                       description: descInput.value
+                   };
+               }
+           }
+
+           // Update the page content
+           const featureCards = document.querySelectorAll('.feature-card');
+           contentData.features.forEach((feature, index) => {
+               if (featureCards[index]) {
+                   const card = featureCards[index];
+                   const icon = card.querySelector('.feature-icon');
+                   const title = card.querySelector('h3');
+                   const desc = card.querySelector('p');
+                   
+                   if (icon) icon.textContent = feature.icon;
+                   if (title) title.textContent = feature.title;
+                   if (desc) desc.textContent = feature.description;
+               }
+           });
+
+           saveContentToStorage();
+           showSaveMessage('Features updated successfully!');
+       }
+
+       function saveContactContent() {
+           contentData.contact.phone = document.getElementById('contact-phone').value;
+           contentData.contact.email = document.getElementById('contact-email').value;
+           contentData.contact.address = document.getElementById('contact-address').value;
+           contentData.contact.hours = document.getElementById('contact-hours').value;
+
+           // Update all contact displays on the page
+           updateContactDisplays();
+           saveContentToStorage();
+           showSaveMessage('Contact information updated successfully!');
+       }
+
+       function updateContactDisplays() {
+           const phoneElements = [
+               document.getElementById('contact-phone-display'),
+               document.getElementById('footer-phone')
+           ];
+           const emailElements = [
+               document.getElementById('contact-email-display'),
+               document.getElementById('footer-email'),
+               document.getElementById('teaching-email')
+           ];
+           const addressElements = [
+               document.getElementById('contact-address-display'),
+               document.getElementById('footer-address')
+           ];
+           const hoursElements = [
+               document.getElementById('contact-hours-display'),
+               document.getElementById('footer-hours')
+           ];
+
+           phoneElements.forEach(el => {
+               if (el) {
+                   el.textContent = contentData.contact.phone;
+                   el.href = `tel:${contentData.contact.phone.replace(/[^0-9]/g, '')}`;
+               }
+           });
+
+           emailElements.forEach(el => {
+               if (el) {
+                   el.textContent = contentData.contact.email;
+                   el.href = `mailto:${contentData.contact.email}`;
+               }
+           });
+
+           addressElements.forEach(el => {
+               if (el) {
+                   el.innerHTML = contentData.contact.address.replace(/\n/g, '<br>');
+               }
+           });
+
+           hoursElements.forEach(el => {
+               if (el) {
+                   el.innerHTML = contentData.contact.hours.replace(/\n/g, '<br>');
+               }
+           });
+       }
+
+       function saveContentToStorage() {
+           try {
+               localStorage.setItem('gk-preschool-content', JSON.stringify(contentData));
+           } catch (e) {
+               console.warn('Could not save to localStorage:', e);
+           }
+       }
+
+       function loadContentFromStorage() {
+           try {
+               const savedContent = localStorage.getItem('gk-preschool-content');
+               if (savedContent) {
+                   const parsedContent = JSON.parse(savedContent);
+                   contentData = { ...contentData, ...parsedContent };
+                   
+                   // Update page content with saved data
+                   document.getElementById('hero-main-title').textContent = contentData.hero.title;
+                   document.getElementById('hero-main-subtitle').textContent = contentData.hero.subtitle;
+                   document.getElementById('hero-primary-btn').textContent = contentData.hero.primaryBtn;
+                   document.getElementById('hero-secondary-btn').textContent = contentData.hero.secondaryBtn;
+                   
+                   // Update features
+                   const featureCards = document.querySelectorAll('.feature-card');
+                   contentData.features.forEach((feature, index) => {
+                       if (featureCards[index]) {
+                           const card = featureCards[index];
+                           const icon = card.querySelector('.feature-icon');
+                           const title = card.querySelector('h3');
+                           const desc = card.querySelector('p');
+                           
+                           if (icon) icon.textContent = feature.icon;
+                           if (title) title.textContent = feature.title;
+                           if (desc) desc.textContent = feature.description;
+                       }
+                   });
+                   
+                   // Update contact info
+                   updateContactDisplays();
+               }
+           } catch (e) {
+               console.warn('Could not load from localStorage:', e);
+           }
+       }
+
+       function showSaveMessage(message) {
+           const existingMessage = document.querySelector('.save-message');
+           if (existingMessage) {
+               existingMessage.remove();
+           }
+
+           const messageEl = document.createElement('div');
+           messageEl.className = 'save-message';
+           messageEl.textContent = message;
+           messageEl.style.cssText = `
+               position: fixed;
+               top: 20px;
+               left: 50%;
+               transform: translateX(-50%);
+               background: #4ECDC4;
+               color: white;
+               padding: 12px 24px;
+               border-radius: 8px;
+               font-weight: 600;
+               z-index: 10001;
+               box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+           `;
+           document.body.appendChild(messageEl);
+
+           setTimeout(() => {
+               messageEl.remove();
+           }, 3000);
+       }
+   </script>
 </body>
 </html>
