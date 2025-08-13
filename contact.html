@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>A loving, Reggio-inspired preschool in Round Rock, TX · Global Kids Preschool</title>
-<meta name="description" content="Small classes, flexible schedules, and caring teachers. Schedule a tour today!">
+<title>Schedule a Tour · Global Kids Preschool</title>
+<meta name="description" content="Reach out with questions or to schedule a visit.">
 <link rel="canonical" href="https://www.gkpreschool.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="icon" href="assets/img/favicon.png">
-<meta property="og:title" content="A loving, Reggio-inspired preschool in Round Rock, TX · Global Kids Preschool">
-<meta property="og:description" content="Small classes, flexible schedules, and caring teachers. Schedule a tour today!">
+<meta property="og:title" content="Schedule a Tour · Global Kids Preschool">
+<meta property="og:description" content="Reach out with questions or to schedule a visit.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.gkpreschool.com/">
 <meta property="og:image" content="https://www.gkpreschool.com/assets/img/og.jpg">
@@ -57,38 +57,23 @@
   </div>
 </header>
 
-<main class="container hero">
-  <div class="grid grid-2">
-    <div>
-      <div class="badge">Round Rock, TX</div>
-      <h1>Small classes, big hearts.</h1>
-      <p class="lead">We’re a Reggio-inspired preschool where curiosity leads the way. Families love our warm teachers, flexible enrollment, and sunny outdoor spaces.</p>
-      <div class="btn-row">
-        <a class="button alt" href="/contact.html">Schedule a tour</a>
-        <a class="button" href="/programs.html">See programs</a>
-      </div>
-      <ul class="inline" style="margin-top:14px">
-        <li>✓ Low teacher–student ratios</li>
-        <li>✓ Reggio Emilia philosophy</li>
-        <li>✓ Outdoor play every day</li>
-        <li>✓ Nutritious snacks</li>
-      </ul>
+<main class="container">
+  <nav class="breadcrumbs"><a href="/index.html">Home</a> › Contact</nav>
+  <h1>Schedule a Tour</h1>
+  <p class="lead">We’d love to meet your family. Fill out the form and we’ll reply quickly.</p>
+  <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
+    <input type="hidden" name="form-name" value="contact">
+    <p class="hidden"><label>Don’t fill this out: <input name="bot-field"></label></p>
+    <div class="row">
+      <div><label>Parent name<input name="name" required></label></div>
+      <div><label>Email<input type="email" name="email" required></label></div>
+      <div><label>Phone<input name="phone"></label></div>
+      <div><label>Child’s age<select name="age"><option>Infant</option><option>Toddler</option><option>Preschool</option></select></label></div>
     </div>
-    <div class="hero-illus">
-      <img class="responsive" src="/assets/img/hero.jpg" alt="Kids learning through play at preschool">
-    </div>
-  </div>
-
-  <section class="grid grid-3" style="margin-top:34px">
-    <div class="card"><h3>Infants</h3><p>Nurturing care and sensory exploration in a peaceful, safe room.</p></div>
-    <div class="card"><h3>Toddlers</h3><p>Hands-on discovery, language building, and social-emotional skills.</p></div>
-    <div class="card"><h3>Preschool</h3><p>Project-based learning, pre-literacy, and kindergarten readiness.</p></div>
-  </section>
-
-  <section style="margin-top:34px">
-    <h2>What parents say</h2>
-    <div class="card"><em>“A hidden gem! Loving teachers, beautiful spaces, and our child can’t wait to go each day.”</em> — Parent review</div>
-  </section>
+    <label>Message<textarea name="message" rows="5"></textarea></label>
+    <div class="btn-row" style="margin-top:10px"><button class="cta" type="submit">Send</button></div>
+    <p class="small">Or call <a href="tel:+15125790245">(512) 579‑0245</a>.</p>
+  </form>
 </main>
 
 <footer class="footer">
